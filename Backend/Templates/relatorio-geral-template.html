@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{tipoRelatorio}}</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+                line-height: 1.6;
+            }
+
+            .header {
+                text-align: center;
+                border-bottom: 3px solid #007bff;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
+            }
+
+            .header h1 {
+                color: #007bff;
+                margin: 0;
+                font-size: 28px;
+            }
+
+            .summary-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+                margin-bottom: 25px;
+            }
+
+            .summary-card {
+                background: linear-gradient(135deg, #007bff, #0056b3);
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: center;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+            }
+
+            .summary-card h3 {
+                margin: 0 0 8px 0;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            .summary-card p {
+                margin: 0;
+                font-size: 12px;
+                opacity: 0.9;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+
+            .info-box {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                border-left: 5px solid #007bff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .info-box h3 {
+                margin-top: 0;
+                color: #007bff;
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .info-box p {
+                margin: 8px 0;
+                font-size: 14px;
+            }
+
+            .section {
+                margin-bottom: 35px;
+                page-break-inside: avoid;
+            }
+
+            .section h2 {
+                color: #007bff;
+                border-bottom: 2px solid #ddd;
+                padding-bottom: 8px;
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background: white;
+            }
+
+            th,
+            td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+                font-size: 13px;
+            }
+
+            th {
+                background-color: #f8f9fa;
+                font-weight: bold;
+                color: #495057;
+                border-bottom: 2px solid #dee2e6;
+            }
+
+            tr:hover {
+                background-color: #f8f9fa;
+            }
+
+            .footer {
+                margin-top: 50px;
+                padding-top: 20px;
+                border-top: 1px solid #ddd;
+                text-align: center;
+                color: #666;
+                font-size: 12px;
+            }
+
+            @media print {
+                body {
+                    margin: 0;
+                    padding: 15px;
+                    font-size: 12px;
+                }
+                .summary-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .info-grid {
+                    grid-template-columns: 1fr;
+                    gap: 10px;
+                }
+                .section {
+                    page-break-inside: avoid;
+                }
+                .header {
+                    page-break-after: avoid;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>{{tipoRelatorio}}</h1>
+            <p><strong>Data de Geração:</strong> {{dataGeracao}}</p>
+            <p>
+                <strong>Total de Dispositivos Analisados:</strong>
+                {{totalDispositivos}}
+            </p>
+        </div>
+
+        {{#if estatisticas}}
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>{{estatisticas.total}}</h3>
+                <p>Total Dispositivos</p>
+            </div>
+            <div
+                class="summary-card"
+                style="background: linear-gradient(135deg, #28a745, #20c997)"
+            >
+                <h3>{{estatisticas.online}}</h3>
+                <p>Dispositivos Online</p>
+            </div>
+            <div
+                class="summary-card"
+                style="background: linear-gradient(135deg, #dc3545, #c82333)"
+            >
+                <h3>{{estatisticas.criticos}}</h3>
+                <p>Dispositivos Críticos</p>
+            </div>
+            <div
+                class="summary-card"
+                style="background: linear-gradient(135deg, #ffc107, #e0a800)"
+            >
+                <h3>{{estatisticas.comUpdatesProblematicos}}</h3>
+                <p>Com Updates Pendentes</p>
+            </div>
+        </div>
+
+        <!-- Estatísticas Detalhadas -->
+        <div
+            class="summary-grid"
+            style="grid-template-columns: repeat(3, 1fr); margin-bottom: 30px"
+        >
+            <div
+                class="summary-card"
+                style="background: linear-gradient(135deg, #6f42c1, #5a2d91)"
+            >
+                <h3>{{analiseGeral.totalSoftwareDesatualizado}}</h3>
+                <p>Softwares Desatualizados</p>
+                <p style="font-size: 10px; margin-top: 2px">
+                    {{estatisticas.comSoftwareDesatualizado}} dispositivo(s)
+                </p>
+            </div>
+            <div
+                class="summary-card"
+                style="background: linear-gradient(135deg, #fd7e14, #e65100)"
+            >
+                <h3>{{estatisticas.comSODesatualizado}}</h3>
+                <p>SO Desatualizado</p>
+            </div>
+            <div
+                class="summary-card"
+                style="background: linear-gradient(135deg, #20c997, #17a2b8)"
+            >
+                <h3>{{estatisticas.comEspacoCritico}}</h3>
+                <p>Espaço Crítico</p>
+            </div>
+        </div>
+        {{/if}}
+
+        <div class="section">
+            <h2>📊 Dispositivos Analisados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Nome do Dispositivo</th>
+                        <th style="width: 15%">Utilizador</th>
+                        <th style="width: 15%">Nível de Criticidade</th>
+                        <th style="width: 10%">Score</th>
+                        <th style="width: 35%">Principais Problemas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dispositivos}}
+                    <tr style="border-left: 4px solid {{cor}};">
+                        <td><strong>{{nome}}</strong></td>
+                        <td>{{utilizador}}</td>
+                        <td style="color: {{cor}}; font-weight: bold;">
+                            {{criticidade}}
+                        </td>
+                        <td><strong>{{score}}</strong></td>
+                        <td>{{problemas}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        {{#if analiseGeral}}
+        <div class="section">
+            <h2>📈 Análise Geral do Ambiente</h2>
+            <div class="info-grid">
+                <div class="info-box">
+                    <h3>🖥️ Sistemas Operacionais</h3>
+                    <p>
+                        <strong>Total de Dispositivos:</strong>
+                        {{analiseGeral.totalDispositivos}}
+                    </p>
+                    <p>
+                        <strong>Workstations:</strong>
+                        {{analiseGeral.tiposDispositivos.workstations}}
+                    </p>
+                    <p>
+                        <strong>Servidores:</strong>
+                        {{analiseGeral.tiposDispositivos.servidores}}
+                    </p>
+                    <p>
+                        <strong>Outros:</strong>
+                        {{analiseGeral.tiposDispositivos.outros}}
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>🔄 Updates e Atualizações</h3>
+                    <p>
+                        <strong>Total Updates Problemáticos:</strong>
+                        {{analiseGeral.totalUpdatesProblematicos}}
+                    </p>
+                    <p>
+                        <strong>Updates Críticos:</strong>
+                        {{analiseGeral.updatesCriticos}}
+                    </p>
+                    <p>
+                        <strong>Updates Importantes:</strong>
+                        {{analiseGeral.updatesImportantes}}
+                    </p>
+                    <p>
+                        <strong>Dispositivos Afetados:</strong>
+                        {{analiseGeral.dispositivosComUpdates}}
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>💻 Software</h3>
+                    <p>
+                        <strong>Total Software Verificado:</strong>
+                        {{analiseGeral.totalSoftwareVerificado}}
+                    </p>
+                    <p>
+                        <strong>Dispositivos c/ Software Desatualizado:</strong>
+                        {{analiseGeral.dispositivosComSoftwareDesatualizado}}
+                    </p>
+                    <p>
+                        <strong>Total Softwares Desatualizados:</strong>
+                        {{analiseGeral.totalSoftwareDesatualizado}}
+                    </p>
+                    <p>
+                        <strong>Taxa de Conformidade:</strong>
+                        {{analiseGeral.taxaConformidadeSoftware}}%
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>⚠️ Riscos Identificados</h3>
+                    <p>
+                        <strong>Dispositivos Offline:</strong>
+                        {{analiseGeral.dispositivosOffline}}
+                    </p>
+                    <p>
+                        <strong>SO Desatualizados:</strong>
+                        {{analiseGeral.dispositivosSODesatualizado}}
+                    </p>
+                    <p>
+                        <strong>Espaço Crítico:</strong>
+                        {{analiseGeral.dispositivosEspacoCritico}}
+                    </p>
+                    <p>
+                        <strong>Score Médio:</strong>
+                        {{analiseGeral.scoreMedio}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {{/if}} {{#if updatesDetalhados}}
+        <div class="section">
+            <h2>🔄 Atualizações Pendentes Críticas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Dispositivo</th>
+                        <th style="width: 35%">Atualização</th>
+                        <th style="width: 15%">Artigo</th>
+                        <th style="width: 15%">Severidade</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each updatesDetalhados}}
+                    <tr
+                        style="background-color: {{#if isCritico}}#fff5f5{{else if isImportante}}#fff8f0{{else}}#fffbf0{{/if}};"
+                    >
+                        <td><strong>{{dispositivo}}</strong></td>
+                        <td>{{titulo}}</td>
+                        <td>{{artigo}}</td>
+                        <td
+                            style="color: {{#if isCritico}}#dc3545{{else if isImportante}}#fd7e14{{else}}#ffc107{{/if}}; font-weight: bold;"
+                        >
+                            {{severidade}}
+                        </td>
+                        <td>{{status}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}} {{#if softwareProblematico}}
+        <div class="section">
+            <h2>💾 Software que Requer Atenção</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Dispositivo</th>
+                        <th style="width: 40%">Software</th>
+                        <th style="width: 15%">Versão Atual</th>
+                        <th style="width: 15%">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each softwareProblematico}}
+                    <tr>
+                        <td><strong>{{dispositivo}}</strong></td>
+                        <td>{{nome}}</td>
+                        <td>{{versaoAtual}}</td>
+                        <td
+                            style="color: {{#if isDesatualizado}}#dc3545{{else}}#ffc107{{/if}}; font-weight: bold;"
+                        >
+                            {{status}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}} {{#if problemasEspaco}}
+        <div class="section">
+            <h2>💾 Problemas de Espaço em Disco</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Dispositivo</th>
+                        <th style="width: 15%">Drive</th>
+                        <th style="width: 20%">Tamanho Total</th>
+                        <th style="width: 20%">Espaço Livre</th>
+                        <th style="width: 15%">% Usado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each problemasEspaco}}
+                    <tr
+                        style="background-color: {{#if isCritico}}#fff5f5{{else}}#fff8f0{{/if}};"
+                    >
+                        <td><strong>{{dispositivo}}</strong></td>
+                        <td><strong>{{drive}}</strong></td>
+                        <td>{{tamanhoTotal}} GB</td>
+                        <td>{{espacoLivre}} GB</td>
+                        <td
+                            style="color: {{#if isCritico}}#dc3545{{else}}#fd7e14{{/if}}; font-weight: bold;"
+                        >
+                            {{percentualUsado}}%
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}} {{#if recomendacoes}}
+        <div class="section">
+            <h2>📋 Recomendações Prioritárias</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Prioridade</th>
+                        <th style="width: 25%">Ação Recomendada</th>
+                        <th style="width: 25%">Dispositivos Afetados</th>
+                        <th style="width: 25%">Descrição</th>
+                        <th style="width: 15%">Prazo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each recomendacoes}}
+                    <tr style="border-left: 4px solid {{cor}};">
+                        <td style="color: {{cor}}; font-weight: bold;">
+                            {{prioridade}}
+                        </td>
+                        <td><strong>{{titulo}}</strong></td>
+                        <td>{{dispositivosAfetados}}</td>
+                        <td>{{descricao}}</td>
+                        <td style="font-weight: bold">{{prazo}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        <div class="footer">
+            <p>
+                <strong
+                    >Relatório Geral gerado automaticamente pelo Sistema
+                    SCCM</strong
+                >
+            </p>
+            <p>
+                Este relatório fornece uma visão consolidada de
+                {{totalDispositivos}} dispositivo(s) analisado(s)
+            </p>
+            <p style="margin-top: 15px; font-size: 11px; color: #888">
+                <strong>Legenda de Criticidade:</strong>
+                CRÍTICO (&gt;=50 pts) | ALTO (30-49 pts) | MÉDIO (15-29 pts) |
+                BAIXO (1-14 pts) | NORMAL (0 pts)
+            </p>
+            <p style="font-size: 11px; color: #888">
+                Gerado em: {{dataGeracao}} | Versão do Sistema:
+                {{versaoSistema}}
+            </p>
+        </div>
+    </body>
+</html>

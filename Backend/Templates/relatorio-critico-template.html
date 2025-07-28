@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{tipoRelatorio}}</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+                line-height: 1.6;
+            }
+
+            .header {
+                text-align: center;
+                border-bottom: 3px solid #dc3545;
+                padding-bottom: 25px;
+                margin-bottom: 40px;
+                background: linear-gradient(135deg, #fff5f5, #ffebee);
+            }
+
+            .header h1 {
+                color: #dc3545;
+                margin: 0;
+                font-size: 28px;
+            }
+
+            .alert {
+                background-color: #f8d7da;
+                color: #721c24;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 30px;
+                border-left: 5px solid #dc3545;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .alert h3 {
+                margin-top: 0;
+                color: #721c24;
+            }
+
+            .section {
+                margin-bottom: 45px;
+                page-break-inside: avoid;
+            }
+
+            .section h2 {
+                color: #dc3545;
+                border-bottom: 2px solid #ddd;
+                padding-bottom: 8px;
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background: white;
+            }
+
+            th,
+            td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+                font-size: 13px;
+            }
+
+            th {
+                background-color: #f8d7da;
+                font-weight: bold;
+                color: #721c24;
+                border-bottom: 2px solid #dc3545;
+            }
+
+            tr:hover {
+                background-color: #fff5f5;
+            }
+
+            .critico-row {
+                background-color: #fff5f5;
+                border-left: 4px solid #dc3545;
+            }
+
+            .footer {
+                margin-top: 50px;
+                padding-top: 20px;
+                border-top: 1px solid #ddd;
+                text-align: center;
+                color: #666;
+                font-size: 12px;
+            }
+
+            .summary-stats {
+                background: linear-gradient(135deg, #dc3545, #c82333);
+                color: white;
+                padding: 25px;
+                border-radius: 12px;
+                text-align: center;
+                margin-bottom: 40px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            .summary-stats h3 {
+                margin: 0 0 10px 0;
+                font-size: 32px;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+                margin-bottom: 40px;
+            }
+
+            .info-card {
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border-left: 5px solid #dc3545;
+                transition: transform 0.2s ease;
+                margin-bottom: 15px;
+            }
+
+            .info-card:hover {
+                transform: translateY(-2px);
+            }
+
+            .info-card h4 {
+                color: #dc3545;
+                margin: 0 0 10px 0;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .info-card .value {
+                font-size: 24px;
+                font-weight: bold;
+                color: #333;
+                margin: 5px 0;
+            }
+
+            .info-card .description {
+                font-size: 13px;
+                color: #666;
+                margin: 0;
+            }
+
+            .severity-indicator {
+                display: inline-block;
+                padding: 4px 8px;
+                border-radius: 12px;
+                font-size: 11px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .severity-critico {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .severity-alto {
+                background-color: #fd7e14;
+                color: white;
+            }
+
+            .severity-medio {
+                background-color: #ffc107;
+                color: #333;
+            }
+
+            .report-summary {
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                padding: 30px;
+                border-radius: 15px;
+                margin-bottom: 40px;
+                border: 1px solid #dee2e6;
+            }
+
+            .report-summary h3 {
+                color: #dc3545;
+                margin: 0 0 15px 0;
+                font-size: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .summary-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-top: 20px;
+            }
+
+            .summary-item {
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: center;
+                border: 1px solid #dee2e6;
+            }
+
+            .summary-item .number {
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            .summary-item .label {
+                font-size: 12px;
+                color: #666;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            @media print {
+                body {
+                    margin: 0;
+                    padding: 15px;
+                    font-size: 12px;
+                }
+
+                .info-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .info-card:hover {
+                    transform: none;
+                }
+
+                .page-break-before {
+                    page-break-before: always;
+                }
+
+                .avoid-page-break {
+                    page-break-inside: avoid;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>🚨 {{tipoRelatorio}}</h1>
+            <p><strong>Data de Geração:</strong> {{dataGeracao}}</p>
+            {{#if periodoAnalise}}
+            <p style="margin: 10px 0 0 0; font-size: 14px; color: #666">
+                <strong>Período de Análise:</strong> {{periodoAnalise}} {{#if
+                totalDispositivos}} |
+                <strong>Total de Dispositivos Analisados:</strong>
+                {{totalDispositivos}} {{/if}}
+            </p>
+            {{else}}
+            <p style="margin: 10px 0 0 0; font-size: 14px; color: #666">
+                <strong>Relatório Gerado em:</strong> {{timestamp}} {{#if
+                totalDispositivos}} |
+                <strong>Dispositivos Analisados:</strong> {{totalDispositivos}}
+                {{/if}}
+            </p>
+            {{/if}}
+        </div>
+
+        <div class="summary-stats">
+            <h3>{{totalCriticos}}</h3>
+            <p>Dispositivos Críticos Identificados</p>
+        </div>
+
+        <!-- Resumo Executivo -->
+        <div class="report-summary">
+            <h3>📊 Resumo Executivo da Situação Crítica</h3>
+            <p style="margin: 0 0 15px 0; color: #333; font-size: 14px">
+                Este relatório identifica
+                <strong>{{totalCriticos}} dispositivos</strong>
+                em estado crítico que requerem atenção imediata. A análise
+                revela problemas significativos que podem comprometer a
+                segurança e operacionalidade da infraestrutura.
+            </p>
+
+            <div class="summary-grid">
+                {{#if scoreMediaCriticidade}}
+                <div class="summary-item">
+                    <div class="number" style="color: #dc3545">
+                        {{scoreMediaCriticidade}}
+                    </div>
+                    <div class="label">Score Médio de Criticidade</div>
+                </div>
+                {{/if}} {{#if dispositivosOffline}}
+                <div class="summary-item">
+                    <div class="number" style="color: #fd7e14">
+                        {{dispositivosOffline}}
+                    </div>
+                    <div class="label">Dispositivos Offline</div>
+                </div>
+                {{/if}} {{#if atualizacoesPendentes}}
+                <div class="summary-item">
+                    <div class="number" style="color: #dc3545">
+                        {{atualizacoesPendentes}}
+                    </div>
+                    <div class="label">Atualizações Críticas Pendentes</div>
+                </div>
+                {{/if}} {{#if sistemaDesatualizados}}
+                <div class="summary-item">
+                    <div class="number" style="color: #856404">
+                        {{sistemaDesatualizados}}
+                    </div>
+                    <div class="label">Sistemas Desatualizados</div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="section page-break-before">
+            <h2>📊 Distribuição por Níveis de Criticidade</h2>
+
+            <!-- Distribuição por Níveis de Criticidade -->
+            <div class="info-grid avoid-page-break">
+                <div class="info-card">
+                    <h4>🔴 Dispositivos Críticos</h4>
+                    <div class="value" style="color: #dc3545">
+                        {{#if
+                        nivelCritico}}{{nivelCritico}}{{else}}{{totalCriticos}}{{/if}}
+                    </div>
+                    <p class="description">
+                        Dispositivos com score ≥ 80 pontos que requerem ação
+                        imediata
+                        <span class="severity-indicator severity-critico"
+                            >Crítico</span
+                        >
+                    </p>
+                </div>
+
+                {{#if nivelAlto}}
+                <div class="info-card">
+                    <h4>🟠 Dispositivos Alto Risco</h4>
+                    <div class="value" style="color: #fd7e14">
+                        {{nivelAlto}}
+                    </div>
+                    <p class="description">
+                        Dispositivos com score entre 60-79 pontos
+                        <span class="severity-indicator severity-alto"
+                            >Alto</span
+                        >
+                    </p>
+                </div>
+                {{/if}} {{#if nivelMedio}}
+                <div class="info-card">
+                    <h4>🟡 Dispositivos Médio Risco</h4>
+                    <div class="value" style="color: #ffc107">
+                        {{nivelMedio}}
+                    </div>
+                    <p class="description">
+                        Dispositivos com score entre 40-59 pontos
+                        <span class="severity-indicator severity-medio"
+                            >Médio</span
+                        >
+                    </p>
+                </div>
+                {{/if}}
+
+                <div class="info-card">
+                    <h4>📊 Status do Sistema</h4>
+                    <div class="value" style="color: #dc3545">
+                        {{#if
+                        tempoMedioOffline}}{{tempoMedioOffline}}{{else}}ATIVO{{/if}}
+                    </div>
+                    <p class="description">
+                        {{#if tempoMedioOffline}} Tempo médio que os
+                        dispositivos críticos estão desconectados {{else}}
+                        Sistema de monitoramento ativo e funcional {{/if}}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚨 Lista de Dispositivos Críticos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Nome do Dispositivo</th>
+                        <th style="width: 15%">Score de Criticidade</th>
+                        <th style="width: 15%">Nível</th>
+                        <th style="width: 45%">Problemas Identificados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dispositivos}}
+                    <tr class="critico-row">
+                        <td><strong>{{nome}}</strong></td>
+                        <td
+                            style="color: {{cor}}; font-weight: bold; font-size: 16px;"
+                        >
+                            {{score}} pontos
+                        </td>
+                        <td style="color: {{cor}}; font-weight: bold;">
+                            {{criticidade}}
+                        </td>
+                        <td>{{problemas}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>📋 Próximos Passos Recomendados</h2>
+            <div
+                style="
+                    background: #f8f9fa;
+                    padding: 20px;
+                    border-radius: 8px;
+                    border-left: 4px solid #007bff;
+                "
+            >
+                <ol style="margin: 0; padding-left: 20px">
+                    <li>
+                        <strong>Priorização:</strong> Atender primeiro os
+                        dispositivos com maior score de criticidade
+                    </li>
+                    <li>
+                        <strong>Conectividade:</strong> Verificar dispositivos
+                        offline e restabelecer comunicação
+                    </li>
+                    <li>
+                        <strong>Atualizações:</strong> Instalar atualizações
+                        críticas e importantes pendentes
+                    </li>
+                    <li>
+                        <strong>Sistema Operacional:</strong> Atualizar sistemas
+                        operacionais desatualizados
+                    </li>
+                    <li>
+                        <strong>Monitoramento:</strong> Implementar
+                        monitoramento contínuo para prevenção
+                    </li>
+                    <li>
+                        <strong>Documentação:</strong> Registrar todas as ações
+                        tomadas para auditoria
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>
+                <strong
+                    >Relatório de Dispositivos Críticos - Sistema SCCM</strong
+                >
+            </p>
+            <p>Timestamp: {{timestamp}}</p>
+            <p style="color: #dc3545">
+                <strong
+                    >⚠️ CONFIDENCIAL - Este relatório contém informações
+                    críticas de segurança</strong
+                >
+            </p>
+        </div>
+    </body>
+</html>
