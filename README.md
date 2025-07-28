@@ -48,19 +48,21 @@ Este sistema permite monitorar e gerenciar atualizações de software em disposi
 
 ## 📦 Estrutura do Projeto
 
+```
 ├── Backend/
-│ ├── Controllers/ # Controladores da API
-│ ├── Services/ # Serviços (DB, PDF, etc.)
-│ ├── Routers/ # Rotas da API
-│ ├── config/ # Configurações e .env.example
-│ └── database/ # Scripts SQL e queries
+│   ├── Controllers/        # Controladores da API
+│   ├── Services/          # Serviços (DB, PDF, etc.)
+│   ├── Routers/           # Rotas da API
+│   ├── config/            # Configurações
+│   └── database/          # Scripts SQL
 ├── Frontend/
-│ ├── src/
-│ │ ├── Components/ # Componentes reutilizáveis
-│ │ ├── Pages/ # Páginas principais
-│ │ ├── Services/ # Integração com API
-│ │ └── hooks/ # Hooks customizados
-│ └── public/ # Arquivos estáticos
+│   ├── Src/
+│   │   ├── Components/    # Componentes React
+│   │   ├── Pages/         # Páginas da aplicação
+│   │   ├── Services/      # Serviços de API
+│   │   └── hooks/         # Custom hooks
+│   └── Public/            # Arquivos públicos
+```
 
 ---
 
@@ -86,104 +88,96 @@ npm install
 npm start
 (Opcional) Defina REACT_APP_API_URL=http://localhost:3000/api/v1 no ambiente.
 
-### 🐳 Docker
-O projeto possui suporte a containerização com Docker.
+## 🐳 Docker
 
-Backend
+Ambos os serviços incluem Dockerfile para containerização.
+
+### Backend
+
+```bash
 docker build -t sccm-backend ./Backend
 docker run -p 3000:3000 sccm-backend
+```
 
-Frontend
+### Frontend
+
+```bash
 docker build -t sccm-frontend ./Frontend
 docker run -p 8080:8080 sccm-frontend
+```
 
 ---
 
-📊 Banco de Dados
-Utiliza MySQL com estrutura baseada no banco SCCM. Scripts disponíveis:
+## 📊 Banco de Dados
+O sistema utiliza MySQL e requer a estrutura do SCCM. Scripts SQL estão disponíveis em `Backend/database/`:
 
-BD_SCCM com as dependencias.sql
-
-dados_ficticios_completos.sql
-
-SCCM_Queries_Completas.sql
+-   `BD_SCCM com as dependencias.sql` - Estrutura principal
+-   `dados_ficticios_completos.sql` - Dados de exemplo
+-   `SCCM_Queries_Completas.sql` - Queries utilizadas
 
 ---
 
-🔧 Configuração Active Directory
+## 🔧 Configuração Active Directory
 A integração com AD é opcional e ainda está em fase de testes.
 
 env
 
-AD_URL=ldap://seu-servidor-ad.com
-BASE_DN=DC=seu-dominio,DC=com
-BIND_DN=CN=conta-servico,DC=seu-dominio,DC=com
-BIND_PASSWORD=senha_conta_servico
+-   `AD_URL`: URL do servidor LDAP
+-   `BASE_DN`: Distinguished Name base
+-   `BIND_DN`: Conta de serviço
+-   `BIND_PASSWORD`: Senha da conta de serviço
 
 ---
 
-🔌 API Endpoints
-/api/v1/dashboard – Dados gerais
+## 🔌 API Endpoints
 
-/api/v1/dispositivos – Lista de dispositivos
-
-/api/v1/updates – Atualizações pendentes
-
-/api/v1/relatorio – Geração de relatórios PDF
+-   `/api/v1/dashboard` - Dados do dashboard
+-   `/api/v1/dispositivos` - Gestão de dispositivos
+-   `/api/v1/updates` - Atualizações
+-   `/api/v1/relatorio` - Relatórios
 
 ℹ️ A API segue arquitetura RESTful, com modularização em controllers, services e routers.
 
 ---
 
-📝 Uso
-Acesse a aplicação: http://localhost:8080
+## 📝 Uso
 
-(Opcional) Faça login com credenciais AD
-
-Navegue pelas seções:
-
-Dashboard
-
-Dispositivos
-
-Updates
-
-Relatórios
+1. Acesse a aplicação em `http://localhost:8080`
+2. (Opcional) Faça login com credenciais do Active Directory
+3. Navegue pelas seções:
+    - **Dashboard**: Visão geral
+    - **Dispositivos**: Lista e detalhes dos dispositivos
+    - **Updates**: Atualizações pendentes
+    - **Relatórios**: Geração de documentos
 
 ---
 
 📈 Roadmap
- Finalizar autenticação LDAP/AD
 
- Suporte a múltiplos servidores SCCM
-
- Notificações em tempo real
-
- API REST 100% documentada
-
- Testes automatizados (Jest / Postman)
-
- Deploy com CI/CD (GitHub Actions)
+-   [ ] Finalizar autenticação LDAP/AD
+-   [ ] Suporte a múltiplos servidores SCCM
+-   [ ] Notificações em tempo real
+-   [ ] API REST 100% documentada
+-   [ ] Testes automatizados (Jest / Postman)
+-   [ ]  Deploy com CI/CD (GitHub Actions)
 
 ---
 
-🤝 Contribuição
-Faça um fork
+## 🤝 Contribuição
 
-Crie uma branch (git checkout -b feature/nova-feature)
-
-Commit (git commit -m 'feat: nova feature')
-
-Push (git push origin feature/nova-feature)
-
-Abra um Pull Request
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
 
 ---
 
-📄 Licença
+## 📄 Licença
 Este projeto está sob a licença MIT. Consulte o arquivo LICENSE.
 
 ---
 
-🆘 Suporte
-Para dúvidas ou suporte, abra uma issue.
+## 🆘 Suporte
+
+Para suporte ou dúvidas, abra uma issue no repositório.
