@@ -75,18 +75,71 @@ Este sistema permite monitorar e gerenciar atualizações de software em disposi
 - Active Directory (opcional)
 
 ### Backend
+1. Navegue para a pasta do backend:
+
+```bash
 cd Backend
+```
+
+2. Instale as dependências:
+
+```bash
 npm install
+```
+
+3. Configure as variáveis de ambiente:
+
+```bash
 cp config/.env.example config/.env
-# edite o .env com suas credenciais
+```
+
+4. Edite o arquivo `.env` com suas configurações:
+
+```env
+PORT=3000
+MYSQL_HOST=localhost
+MYSQL_USER=seu_usuario
+MYSQL_PASSWORD=sua_senha
+MYSQL_DATABASE=seu_banco
+MYSQL_PORT=3306
+AD_URL=ldap://seu-servidor-ad.com
+BASE_DN=DC=seu-dominio,DC=com
+BIND_DN=CN=conta-servico,DC=seu-dominio,DC=com
+BIND_PASSWORD=senha_conta_servico
+```
+
+5. Configure o banco de dados executando os scripts em `database/`
+
+6. Inicie o servidor:
+
+```bash
 npm start
-ℹ️ Configure seu banco de dados MySQL com os scripts disponíveis em database/.
+```
 
 ### Frontend
+1. Navegue para a pasta do frontend:
+
+```bash
 cd Frontend
+```
+
+2. Instale as dependências:
+
+```bash
 npm install
+```
+
+3. Configure a URL da API (opcional):
+
+```bash
+export REACT_APP_API_URL=http://seu-servidor:3000/api/v1
+```
+
+4. Inicie o desenvolvimento:
+
+```bash
 npm start
-(Opcional) Defina REACT_APP_API_URL=http://localhost:3000/api/v1 no ambiente.
+```
 
 ## 🐳 Docker
 
