@@ -1,1 +1,206 @@
-# sistema-gestao-atualizacoes
+# Sistema de Gestão de Atualizações
+
+Sistema de gestão e monitoramento de atualizações baseado em SCCM (System Center Configuration Manager) com interface web moderna.
+
+## 📋 Descrição
+
+Este sistema permite monitorar e gerenciar atualizações de software em dispositivos Windows através de uma interface web intuitiva, integrando-se com dados do SCCM.
+
+## 🚀 Funcionalidades
+
+-   **Dashboard**: Visão geral do estado dos dispositivos e atualizações
+-   **Gestão de Dispositivos**: Monitoramento detalhado de cada dispositivo
+-   **Atualizações**: Acompanhamento do status de atualizações pendentes
+-   **Relatórios**: Geração de relatórios em PDF (individual, geral, críticos)
+-   **Autenticação AD**: Integração com Active Directory
+-   **Verificador de Versões**: Comparação automática com versões mais recentes
+
+## 🛠️ Tecnologias
+
+### Backend
+
+-   Node.js
+-   Express.js
+-   MySQL
+-   Active Directory Integration
+-   PDF Generation
+
+### Frontend
+
+-   React
+-   Tailwind CSS
+-   Webpack
+-   Axios
+
+## 📦 Estrutura do Projeto
+
+```
+├── Backend/
+│   ├── Controllers/        # Controladores da API
+│   ├── Services/          # Serviços (DB, PDF, etc.)
+│   ├── Routers/           # Rotas da API
+│   ├── config/            # Configurações
+│   └── database/          # Scripts SQL
+├── Frontend/
+│   ├── Src/
+│   │   ├── Components/    # Componentes React
+│   │   ├── Pages/         # Páginas da aplicação
+│   │   ├── Services/      # Serviços de API
+│   │   └── hooks/         # Custom hooks
+│   └── Public/            # Arquivos públicos
+```
+
+## ⚙️ Instalação
+
+### Pré-requisitos
+
+-   Node.js (v14+)
+-   MySQL
+-   Active Directory (opcional)
+
+### Backend
+
+1. Navegue para a pasta do backend:
+
+```bash
+cd Backend
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente:
+
+```bash
+cp config/.env.example config/.env
+```
+
+4. Edite o arquivo `.env` com suas configurações:
+
+```env
+PORT=3000
+MYSQL_HOST=localhost
+MYSQL_USER=seu_usuario
+MYSQL_PASSWORD=sua_senha
+MYSQL_DATABASE=seu_banco
+MYSQL_PORT=3306
+AD_URL=ldap://seu-servidor-ad.com
+BASE_DN=DC=seu-dominio,DC=com
+BIND_DN=CN=conta-servico,DC=seu-dominio,DC=com
+BIND_PASSWORD=senha_conta_servico
+```
+
+5. Configure o banco de dados executando os scripts em `database/`
+
+6. Inicie o servidor:
+
+```bash
+npm start
+```
+
+### Frontend
+
+1. Navegue para a pasta do frontend:
+
+```bash
+cd Frontend
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Configure a URL da API (opcional):
+
+```bash
+export REACT_APP_API_URL=http://seu-servidor:3000/api/v1
+```
+
+4. Inicie o desenvolvimento:
+
+```bash
+npm start
+```
+
+## 🐳 Docker
+
+Ambos os serviços incluem Dockerfile para containerização.
+
+### Backend
+
+```bash
+docker build -t sccm-backend ./Backend
+docker run -p 3000:3000 sccm-backend
+```
+
+### Frontend
+
+```bash
+docker build -t sccm-frontend ./Frontend
+docker run -p 8080:8080 sccm-frontend
+```
+
+## 📊 Banco de Dados
+
+O sistema utiliza MySQL e requer a estrutura do SCCM. Scripts SQL estão disponíveis em `Backend/database/`:
+
+-   `BD_SCCM com as dependencias.sql` - Estrutura principal
+-   `dados_ficticios_completos.sql` - Dados de exemplo
+-   `SCCM_Queries_Completas.sql` - Queries utilizadas
+
+## 🔧 Configuração
+
+### Active Directory
+
+Para autenticação AD, configure:
+
+-   `AD_URL`: URL do servidor LDAP
+-   `BASE_DN`: Distinguished Name base
+-   `BIND_DN`: Conta de serviço
+-   `BIND_PASSWORD`: Senha da conta de serviço
+
+### API Endpoints
+
+-   `/api/v1/dashboard` - Dados do dashboard
+-   `/api/v1/dispositivos` - Gestão de dispositivos
+-   `/api/v1/updates` - Atualizações
+-   `/api/v1/relatorio` - Relatórios
+
+## 📝 Uso
+
+1. Acesse a aplicação em `http://localhost:8080`
+2. Faça login com credenciais do Active Directory
+3. Navegue pelas seções:
+    - **Dashboard**: Visão geral
+    - **Dispositivos**: Lista e detalhes dos dispositivos
+    - **Updates**: Atualizações pendentes
+    - **Relatórios**: Geração de documentos
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para detalhes.
+
+## 🆘 Suporte
+
+Para suporte ou dúvidas, abra uma issue no repositório.
+
+## 📈 Roadmap
+
+-   [ ] Suporte a múltiplos servidores SCCM
+-   [ ] Notificações em tempo real
+-   [ ] API REST completa
+-   [ ] Testes automatizados
+-   [ ] Documentação da API
